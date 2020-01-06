@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.axia.copartner.mapper.UserMapper">
+
+	<resultMap type="UserInfo" id="UserInfoResult">
+		<id     property="id"         column="id"       />
+		<result property="userId"      column="userId"    />
+		<result property="telephone"      column="telephone"    />
+		<result property="username"   		  column="username" />
+		<result property="integralLast"   column="integralLast"  />
+		<result property="token"   		  column="token" />
+		<result property="lastLoginTime"  column="lastLoginTime"  />
+		<result property="auth"  column="auth"  />
+	</resultMap>
+
+
+	<sql id="selectUserVo">
+        select  u.id, u.userId, u.telephone, u.name, u.email, u.integralLast, u.integralLast, u.token, u.lastLoginTime
+		from sys_user u
+    </sql>
+
+	<select id="selectUserByPhoneNumber" parameterType="String" resultMap="UserInfoResult">
+		<include refid="selectUserVo"/>
+		where u.telephone = #{telephone}
+	</select>
+
+
+	<update id="updateUser" parameterType="UserInfo">
+		update t_user
+		<set>
+			<if test="auth != null and auth != ''">auth = #{auth},</if>
+			<if test="userId != null and userId != ''">userId = #{userId},</if>
+			<if test="telephone != null and telephone != ''">telephone = #{telephone},</if>
+			<if test="username != null and username != ''">username = #{username},</if>
+			<if test="integralLast != null and integralLast != ''">integralLast = #{integralLast},</if>
+			<if test="lastLoginTime != null and lastLoginTime != ''">lastLoginTime = #{lastLoginTime},</if>
+			<if test="token != null and token != ''">token = #{token},</if>
+		</set>
+		where userId = #{userId}
+	</update>
+
+</mapper> 
